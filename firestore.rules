@@ -1,0 +1,73 @@
+// ============================================================
+// FILE: backend-config/firestore.rules
+// SAVE TO: brewmind_app/firestore.rules
+// ============================================================
+// Firebase Firestore Security Rules
+// Deploy with: firebase deploy --only firestore:rules
+// These rules secure all data so only the right people can read/write.
+// ============================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── HELPER FUNCTIONS ──────────────────────────────────────
+    // Check if the user is logged in
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Check if the request is from the specific user
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // ── USERS COLLECTION ──────────────────────────────────────
+    // Users can only read/write their own profile
+    match /users/{userId} {
+      allow read: if isAuth() && isOwner(userId);
+      allow create: if isAuth() && isOwner(userId);
+      allow update: if isAuth() && isOwner(userId);
+      allow delete: if false; // Users cannot delete their own accounts
+    }
+
+    // ── DRINKS COLLECTION ─────────────────────────────────────
+    // All logged-in users can read drinks
+    // Only admin can write (managed via Firebase Admin SDK on backend)
+    match /drinks/{drinkId} {
+      allow read: if isAuth();
+      allow write: if false; // Managed by admin dashboard only
+    }
+
+    // ── ORDERS COLLECTION ─────────────────────────────────────
+    // Users can read their own orders
+    // Users can create orders (placing new orders)
+    // Only the order owner can read their order
+    match /orders/{orderId} {
+      allow read: if isAuth() && isOwner(resource.data.userID);
+      allow create: if isAuth() && isOwner(request.resource.data.userID);
+      allow update: if false; // Status updates handled by admin only
+      allow delete: if false;
+    }
+
+    // ── RESERVATIONS COLLECTION ───────────────────────────────
+    // Users can read and create their own reservations
+    // Users can cancel (update status to 'cancelled') their own reservations
+    match /reservations/{resId} {
+      allow read: if isAuth() && isOwner(resource.data.userID);
+      allow create: if isAuth() && isOwner(request.resource.data.userID);
+      allow update: if isAuth()
+        && isOwner(resource.data.userID)
+        && request.resource.data.status == 'cancelled'; // Only allow cancelling
+      allow delete: if false;
+    }
+
+    // ── LEADERBOARD COLLECTION ────────────────────────────────
+    // Everyone logged in can read the leaderboard (it's public)
+    // Only Cloud Functions can write (via Admin SDK)
+    match /leaderboard/{userId} {
+      allow read: if isAuth();
+      allow write: if false; // Written by Cloud Functions only
+    }
+  }
+}
