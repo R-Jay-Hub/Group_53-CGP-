@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "329523651010",
+    "project_id": "brewmind-cafe",
+    "storage_bucket": "brewmind-cafe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329523651010:android:c31c28406081484369b65b",
+        "android_client_info": {
+          "package_name": "com.example.brewmind_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGypty2rFGpl5t5s5bRCu2d8lNN7mQ5xM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
