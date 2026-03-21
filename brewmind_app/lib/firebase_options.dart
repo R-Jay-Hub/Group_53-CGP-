@@ -31,7 +31,7 @@ class DefaultFirebaseOptions {
   // Web
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyD52Ia-RgsaQcczXhRuRFQAsGPhEkg-g3M',
+    apiKey: '',
     authDomain: 'brewmind-cafe.firebaseapp.com',
     projectId: 'brewmind-cafe',
     storageBucket: 'brewmind-cafe.firebasestorage.app',
@@ -42,7 +42,7 @@ class DefaultFirebaseOptions {
 
   // Andriod
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD52Ia-RgsaQcczXhRuRFQAsGPhEkg-g3M',
+    apiKey: '',
     authDomain: 'brewmind-cafe.firebaseapp.com',
     projectId: 'brewmind-cafe',
     storageBucket: 'brewmind-cafe.firebasestorage.app',
@@ -52,7 +52,7 @@ class DefaultFirebaseOptions {
 
   // ios
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyD52Ia-RgsaQcczXhRuRFQAsGPhEkg-g3M',
+    apiKey: '',
     authDomain: 'brewmind-cafe.firebaseapp.com',
     projectId: 'brewmind-cafe',
     storageBucket: 'brewmind-cafe.firebasestorage.app',
@@ -63,7 +63,7 @@ class DefaultFirebaseOptions {
 
   // macOS
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyD52Ia-RgsaQcczXhRuRFQAsGPhEkg-g3M',
+    apiKey: '',
     authDomain: 'brewmind-cafe.firebaseapp.com',
     projectId: 'brewmind-cafe',
     storageBucket: 'brewmind-cafe.firebasestorage.app',
@@ -74,7 +74,7 @@ class DefaultFirebaseOptions {
 
   // Windows
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyD52Ia-RgsaQcczXhRuRFQAsGPhEkg-g3M',
+    apiKey: '',
     authDomain: 'brewmind-cafe.firebaseapp.com',
     projectId: 'brewmind-cafe',
     storageBucket: 'brewmind-cafe.firebasestorage.app',
