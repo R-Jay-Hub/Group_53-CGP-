@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrewMind — Smart Café Dashboard</title>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Styles -->
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  
+<!--Login Page-->
+
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">☕</div>
+    <h1 class="login-title">BrewMind</h1>
+    <p class="login-sub">Admin Dashboard — Powered by Firebase</p>
+    <div class="login-form">
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" id="loginEmail"
+          placeholder="admin@brewmind.com"
+          onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" id="loginPassword"
+          placeholder="••••••••"
+          onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <div class="login-error" id="loginError"></div>
+      <button class="btn-primary full" id="loginBtn" onclick="doLogin()">Sign In</button>
+    </div>
+    <div style="margin-top:16px;text-align:center">
+      <span id="loginStatus" style="font-size:11px;color:var(--text3)">⏳ Connecting to Firebase...</span>
+    </div>
+  </div>
+</div>
+
+<div class="app-shell" id="appShell" style="display:none"> 
+  <!-- end login page-->
+
+  
+<!-- Reservations Page -->
+
+    <section class="page" id="page-reservations">
+      <div class="page-header">
+        <div>
+          <h1 class="page-h1">Reservations</h1>
+          <p class="page-sub"></p>
+        </div>
+        <div class="date-nav">
+          <button class="icon-btn" onclick="changeDate(-1)">←</button>
+          <span class="current-date" id="currentDateDisplay"></span>
+          <button class="icon-btn" onclick="changeDate(1)">→</button>
+        </div>
+      </div>
+      <div class="table-card full">
+        <div class="table-header"><span class="table-title">All Reservations</span></div>
+        <table class="data-table">
+          <thead><tr><th>ID</th><th>Customer</th><th>Date</th><th>Time</th><th>Table</th><th>Party</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="reservationsBody"><tr><td colspan="8" class="loading-cell">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </section>  
+  <!-- end -->
+  
+
+<!-- Chart.js CDN -->
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<!-- JS Script -->
+
+<script src="assets/js/app.js"></script>
+<script src="assets/js/firebase.js"></script>
+<script src="assets/js/dashboard.js"></script>
+<script src="assets/js/drinks.js"></script>
+<script src="assets/js/orders.js"></script>
+<script src="assets/js/reservations.js"></script>
+<script src="assets/js/users.js"></script>
+<script src="assets/js/leaderboard.js"></script>
+<script src="assets/js/analytics.js"></script>
+  
+  </body>
+</html>
