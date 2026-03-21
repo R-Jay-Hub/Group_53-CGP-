@@ -191,6 +191,31 @@
     </section>
     <!-- end -->
 
+    <!-- Drink menu Page -->
+
+    <section class="page" id="page-drinks">
+      <div class="page-header">
+        <div>
+          <h1 class="page-h1">Drink Menu</h1>
+          <p class="page-sub"></p>
+        </div>
+        <button class="btn-primary" onclick="openDrinkModal()">+ Add New Drink</button>
+      </div>
+      <div class="filter-bar">
+        <div class="filter-tabs">
+          <button class="ftab active" onclick="filterDrinks('all',this)">All</button>
+          <button class="ftab" onclick="filterDrinks('happy',this)">😊 Happy</button>
+          <button class="ftab" onclick="filterDrinks('relaxed',this)">😌 Relaxed</button>
+          <button class="ftab" onclick="filterDrinks('stressed',this)">😰 Stressed</button>
+          <button class="ftab" onclick="filterDrinks('tired',this)">😴 Tired</button>
+          <button class="ftab" onclick="filterDrinks('energetic',this)">⚡ Energetic</button>
+        </div>
+        <input type="text" placeholder="Search drinks..." class="search-input small" oninput="searchDrinks(this.value)">
+      </div>
+      <div class="drinks-grid" id="drinksGrid"><div class="loading-cell">Loading from Firestore...</div></div>
+    </section>
+    
+
     <!-- Orders Page-->
 
     <section class="page" id="page-orders">
@@ -234,7 +259,108 @@
       </div>
     </section>  
   <!-- end -->
-  
+
+   <!-- Leaderboard Page -->
+
+    <section class="page" id="page-leaderboard">
+      <div class="page-header">
+        <div>
+          <h1 class="page-h1">Loyalty Leaderboard</h1>
+          <p class="page-sub"></p>
+        </div>
+      </div>
+      <div class="podium-row" id="podiumRow"></div>
+      <div class="leaderboard-list" id="leaderboardList"><div class="loading-cell">Loading leaderboard...</div></div>
+    </section>
+    <!-- end -->
+
+    <!-- Analytics Page -->
+
+    <section class="page" id="page-analytics">
+      <div class="page-header">
+        <div>
+          <h1 class="page-h1">Analytics</h1>
+          <p class="page-sub"></p>
+        </div>
+        <select class="select-input" id="analyticsRange" onchange="loadAnalytics()">
+          <option value="7">Last 7 days</option>
+          <option value="30">Last 30 days</option>
+        </select>
+      </div>
+      <div class="analytics-grid">
+        <div class="analytic-card"><div class="analytic-label">Avg. Order Value</div><div class="analytic-value" id="avgOrderVal">—</div><div class="analytic-bar"><div class="analytic-fill" id="avgOrderBar" style="width:0%;background:#c8965a"></div></div></div>
+        <div class="analytic-card"><div class="analytic-label">Total Orders</div><div class="analytic-value" id="totalOrdersVal">—</div><div class="analytic-bar"><div class="analytic-fill" id="totalOrdersBar" style="width:0%;background:#7eb8a4"></div></div></div>
+        <div class="analytic-card"><div class="analytic-label">Total Revenue</div><div class="analytic-value" id="totalRevenueVal">—</div><div class="analytic-bar"><div class="analytic-fill" id="totalRevenueBar" style="width:0%;background:#d4856a"></div></div></div>
+        <div class="analytic-card"><div class="analytic-label">Registered Users</div><div class="analytic-value" id="activeUsersVal">—</div><div class="analytic-bar"><div class="analytic-fill" id="activeUsersBar" style="width:0%;background:#a89bc0"></div></div></div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card wide"><div class="chart-header"><span class="chart-title">Revenue Trend</span></div><canvas id="revenueChart"></canvas></div>
+        <div class="chart-card">
+          <div class="chart-header"><span class="chart-title">Mood Distribution</span></div>
+          <canvas id="moodChart"></canvas>
+          <div class="donut-legend" id="moodLegend"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>   
+  <!-- end -->
+
+<!-- Modals -->
+
+<!-- Drink Modal -->
+
+<div class="modal-overlay" id="drinkModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="drinkModalTitle">Add New Drink</h2>
+      <button class="modal-close" onclick="closeDrinkModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Drink Name *</label><input type="text" class="form-input" id="drinkName" placeholder="e.g. Vanilla Cold Brew"></div>
+        <div class="form-group"><label class="form-label">Price (RM) *</label><input type="number" class="form-input" id="drinkPrice" placeholder="12.00" step="0.50"></div>
+        <div class="form-group full"><label class="form-label">Description</label><textarea class="form-input" id="drinkDesc" rows="2" placeholder="Short description..."></textarea></div>
+        <div class="form-group"><label class="form-label">Mood Tag *</label>
+          <select class="form-input" id="drinkMood">
+            <option value="">Select mood</option>
+            <option value="happy">😊 Happy</option>
+            <option value="relaxed">😌 Relaxed</option>
+            <option value="stressed">😰 Stressed</option>
+            <option value="tired">😴 Tired</option>
+            <option value="energetic">⚡ Energetic</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Category</label>
+          <select class="form-input" id="drinkCat">
+            <option>Coffee</option><option>Tea</option><option>Smoothie</option>
+            <option>Cold Brew</option><option>Specialty</option>
+          </select>
+        </div>
+        <div class="form-group full"><label class="form-label">Allergens</label>
+          <div class="allergen-grid">
+            <label class="check-label"><input type="checkbox" value="milk"> 🥛 Milk</label>
+            <label class="check-label"><input type="checkbox" value="nuts"> 🥜 Nuts</label>
+            <label class="check-label"><input type="checkbox" value="gluten"> 🌾 Gluten</label>
+            <label class="check-label"><input type="checkbox" value="soy"> 🫘 Soy</label>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">Emoji</label><input type="text" class="form-input" id="drinkEmoji" placeholder="☕" maxlength="4"></div>
+        <div class="form-group"><label class="form-label">Available in App?</label>
+          <select class="form-input" id="drinkAvailable">
+            <option value="true">✓ Yes — Show in menu</option>
+            <option value="false">✗ No — Hide from menu</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeDrinkModal()">Cancel</button>
+      <button class="btn-primary" id="saveDrinkBtn" onclick="saveDrink()">💾 Save to Firebase</button>
+    </div>
+  </div>
+</div>  
 
 <!-- Chart.js CDN -->
  
