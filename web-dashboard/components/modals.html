@@ -1,0 +1,93 @@
+
+<!-- DRINK ADD / EDIT MODAL -->
+<div class="modal-overlay" id="drinkModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="drinkModalTitle">Add New Drink</h2>
+      <button class="modal-close" onclick="closeDrinkModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Drink Name *</label>
+          <input type="text" class="form-input" id="drinkName" placeholder="e.g. Vanilla Cold Brew">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Price (RM) *</label>
+          <input type="number" class="form-input" id="drinkPrice" placeholder="12.00" step="0.50">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Description</label>
+          <textarea class="form-input" id="drinkDesc" rows="2" placeholder="Short description..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mood Tag *</label>
+          <select class="form-input" id="drinkMood">
+            <option value="">Select mood</option>
+            <option value="happy">😊 Happy</option>
+            <option value="relaxed">😌 Relaxed</option>
+            <option value="stressed">😰 Stressed</option>
+            <option value="tired">😴 Tired</option>
+            <option value="energetic">⚡ Energetic</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-input" id="drinkCat">
+            <option>Coffee</option>
+            <option>Tea</option>
+            <option>Smoothie</option>
+            <option>Cold Brew</option>
+            <option>Specialty</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Allergens</label>
+          <div class="allergen-grid">
+            <label class="check-label"><input type="checkbox" value="milk"> 🥛 Milk</label>
+            <label class="check-label"><input type="checkbox" value="nuts"> 🥜 Nuts</label>
+            <label class="check-label"><input type="checkbox" value="gluten"> 🌾 Gluten</label>
+            <label class="check-label"><input type="checkbox" value="soy"> 🫘 Soy</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Emoji</label>
+          <input type="text" class="form-input" id="drinkEmoji" placeholder="☕" maxlength="4">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Available in App?</label>
+          <select class="form-input" id="drinkAvailable">
+            <option value="true">✓ Yes — Show in menu</option>
+            <option value="false">✗ No — Hide from menu</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeDrinkModal()">Cancel</button>
+      <button class="btn-primary" id="saveDrinkBtn" onclick="saveDrink()">💾 Save to Firebase</button>
+    </div>
+  </div>
+</div>
+
+<!-- ORDER STATUS UPDATE MODAL -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal small-modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Update Order Status</h2>
+      <button class="modal-close" onclick="closeOrderModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-info" id="orderModalInfo"></p>
+      <div class="status-btn-group">
+        <button class="status-btn pending"   onclick="updateOrderStatus('pending')">Pending</button>
+        <button class="status-btn preparing" onclick="updateOrderStatus('preparing')">Preparing</button>
+        <button class="status-btn ready"     onclick="updateOrderStatus('ready')">Ready</button>
+        <button class="status-btn completed" onclick="updateOrderStatus('completed')">Completed</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GLOBAL TOAST NOTIFICATION -->
+<div class="toast" id="toast"></div>
