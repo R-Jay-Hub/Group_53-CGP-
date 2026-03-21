@@ -45,6 +45,171 @@
 <div class="app-shell" id="appShell" style="display:none"> 
   <!-- end login page-->
 
+  <!--Sidebar-->
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">☕</div>
+      <div class="logo-text">
+        <span class="logo-name">BrewMind</span>
+        <span class="logo-sub">Admin Console</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a href="#" class="nav-item active" data-page="dashboard">
+        <span class="nav-icon">⬡</span><span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-page="analytics">
+        <span class="nav-icon">◈</span><span>Analytics</span>
+      </a>
+      <div class="nav-section-label">Operations</div>
+      <a href="#" class="nav-item" data-page="drinks">
+        <span class="nav-icon">◉</span><span>Drink Menu</span>
+        <span class="nav-badge" id="badgeDrinks">0</span>
+      </a>
+      <a href="#" class="nav-item" data-page="orders">
+        <span class="nav-icon">◎</span><span>Orders</span>
+        <span class="nav-badge new" id="badgeOrders">0</span>
+      </a>
+      <a href="#" class="nav-item" data-page="reservations">
+        <span class="nav-icon">◫</span><span>Reservations</span>
+      </a>
+      <div class="nav-section-label">Community</div>
+      <a href="#" class="nav-item" data-page="users">
+        <span class="nav-icon">◌</span><span>Customers</span>
+      </a>
+      <a href="#" class="nav-item" data-page="leaderboard">
+        <span class="nav-icon">◆</span><span>Leaderboard</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="admin-info">
+        <div class="admin-avatar" id="adminAvatar">A</div>
+        <div>
+          <div class="admin-name" id="adminName">Admin</div>
+          <div class="admin-role" id="adminEmail">—</div>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()" title="Sign Out">⏻</button>
+    </div>
+  </aside>
+
+
+  <main class="main-content">
+
+    <!--Top Bar-->
+
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+        <div class="page-title" id="pageTitle">Dashboard</div>
+      </div>
+      <div class="topbar-right">
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+          <input type="text" placeholder="Search..." class="search-input" id="globalSearch">
+        </div>
+        <div class="firebase-status">
+          <span class="status-dot connected" id="statusDot"></span>
+          <span id="statusLabel" style="font-size:11px;color:var(--text3)">Live</span>
+        </div>
+        <div class="time-display" id="timeDisplay"></div>
+      </div>
+    </header>
+
+    <!--Dashboard Page-->
+
+    <section class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div>
+          <h1 class="page-h1">Welcome</h1>
+          <p class="page-sub"></p>
+        </div>
+        <button class="btn-primary" onclick="exportReport()">Export Report</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card" style="--accent:#c8965a">
+          <div class="stat-top"><span class="stat-label">Orders Today</span><span class="stat-icon">◎</span></div>
+          <div class="stat-value" id="statOrders">—</div>
+          <div class="stat-trend positive" id="statOrdersTrend">Loading...</div>
+        </div>
+        <div class="stat-card" style="--accent:#7eb8a4">
+          <div class="stat-top"><span class="stat-label">Revenue Today</span><span class="stat-icon">◈</span></div>
+          <div class="stat-value" id="statRevenue">—</div>
+          <div class="stat-trend positive">From completed orders</div>
+        </div>
+        <div class="stat-card" style="--accent:#d4856a">
+          <div class="stat-top"><span class="stat-label">Active Reservations</span><span class="stat-icon">◫</span></div>
+          <div class="stat-value" id="statReservations">—</div>
+          <div class="stat-trend neutral">Today's bookings</div>
+        </div>
+        <div class="stat-card" style="--accent:#a89bc0">
+          <div class="stat-top"><span class="stat-label">Registered Users</span><span class="stat-icon">◌</span></div>
+          <div class="stat-value" id="statUsers">—</div>
+          <div class="stat-trend positive">Total customers</div>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card wide">
+          <div class="chart-header">
+            <span class="chart-title">Orders This Week</span>
+            <div class="chart-tabs">
+              <button class="chart-tab active" onclick="switchWeekChart('week',this)">Week</button>
+              <button class="chart-tab" onclick="switchWeekChart('month',this)">Month</button>
+            </div>
+          </div>
+          <canvas id="ordersChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><span class="chart-title">Popular Drinks</span></div>
+          <canvas id="drinksChart"></canvas>
+          <div class="donut-legend" id="drinksLegend"></div>
+        </div>
+      </div>
+      <div class="bottom-row">
+        <div class="table-card">
+          <div class="table-header">
+            <span class="table-title">Recent Orders</span>
+            <a href="#" class="view-all" onclick="navigate('orders')">View all →</a>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th></tr></thead>
+            <tbody id="recentOrdersBody"><tr><td colspan="5" class="loading-cell">Connecting to Firestore...</td></tr></tbody>
+          </table>
+        </div>
+        <div class="table-card">
+          <div class="table-header">
+            <span class="table-title">Today's Reservations</span>
+            <a href="#" class="view-all" onclick="navigate('reservations')">View all →</a>
+          </div>
+          <div class="reservation-list" id="todayReservations">
+            <div class="loading-cell">Loading...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- end -->
+
+    <!-- Orders Page-->
+
+    <section class="page" id="page-orders">
+      <div class="page-header">
+        <div>
+          <h1 class="page-h1">Order Management</h1>
+          <p class="page-sub"></p>
+        </div>
+        <div class="status-filters">
+          <button class="sfilt active" onclick="filterOrders('all',this)">All</button>
+          <button class="sfilt" onclick="filterOrders('pending',this)">Pending</button>
+          <button class="sfilt" onclick="filterOrders('preparing',this)">Preparing</button>
+          <button class="sfilt" onclick="filterOrders('ready',this)">Ready</button>
+          <button class="sfilt" onclick="filterOrders('completed',this)">Completed</button>
+        </div>
+      </div>
+      <div class="orders-board" id="ordersBoard"><div class="loading-cell">Listening to Firestore...</div></div>
+    </section>    
+<!-- end -->
   
 <!-- Reservations Page -->
 
