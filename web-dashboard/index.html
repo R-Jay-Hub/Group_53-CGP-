@@ -398,6 +398,71 @@
 
 <div class="toast" id="toast"></div>  
 
+<!-- Firebase -->
+
+<script type="module">
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc,
+    updateDoc, deleteDoc, query, where, orderBy, limit, onSnapshot,
+    serverTimestamp, Timestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // Firebase Config
+
+  const firebaseConfig = {
+    apiKey:            "",
+    authDomain:        "brewmind-cafe.firebaseapp.com",
+    projectId:         "brewmind-cafe",
+    storageBucket:     "brewmind-cafe.firebasestorage.app",
+    messagingSenderId: "329523651010",
+    appId:             "1:329523651010:web:4c380d3bbd93c01969b65b",
+    measurementId:     "G-12Z33QPQEM"
+  };
+  
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  window._auth = auth;
+  window._db   = db;
+  window._fb   = {
+    signInWithEmailAndPassword, signOut, onAuthStateChanged,
+    collection, doc, getDoc, getDocs, addDoc, setDoc,
+    updateDoc, deleteDoc, query, where, orderBy, limit,
+    onSnapshot, serverTimestamp, Timestamp
+  };
+
+  window._firebaseReady = true;
+  document.getElementById('loginStatus').textContent = '✓ Firebase connected';
+  console.log('✅ Firebase initialized — project: brewmind-cafe');
+
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('appShell').style.display    = 'flex';
+      document.getElementById('adminName').textContent     = user.displayName || user.email.split('@')[0];
+      document.getElementById('adminEmail').textContent    = user.email;
+      document.getElementById('adminAvatar').textContent   = (user.displayName || user.email)[0].toUpperCase();
+      document.getElementById('statusDot').className       = 'status-dot connected';
+      document.getElementById('statusLabel').textContent   = 'Live';
+      if (typeof window.initApp === 'function') {
+        window.initApp();
+      } else {
+        window._pendingInit = true;
+      }
+    } else {
+      document.getElementById('loginScreen').style.display = 'flex';
+      document.getElementById('appShell').style.display    = 'none';
+    }
+  });
+</script>  
+
 <!-- Chart.js CDN -->
  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
