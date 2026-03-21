@@ -362,6 +362,28 @@
   </div>
 </div>  
 
+<!-- Order status Modal -->
+
+<div class="modal-overlay" id="orderModal">
+  <div class="modal small-modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Update Order Status</h2>
+      <button class="modal-close" onclick="closeOrderModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-info" id="orderModalInfo"></p>
+      <div class="status-btn-group">
+        <button class="status-btn pending"   onclick="updateOrderStatus('pending')">Pending</button>
+        <button class="status-btn preparing" onclick="updateOrderStatus('preparing')">Preparing</button>
+        <button class="status-btn ready"     onclick="updateOrderStatus('ready')">Ready</button>
+        <button class="status-btn completed" onclick="updateOrderStatus('completed')">Completed</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>  
+
 <!-- Chart.js CDN -->
  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
